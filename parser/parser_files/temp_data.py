@@ -600,3 +600,11 @@ all_links_of_vinyl = [
     "https://www.discogs.com/ru/release/30433058-Ian-Hunter-Defiance-Part-2-Fiction",
     "https://www.discogs.com/ru/release/30447776-Steps-Deeper-Shade-Of-Blue",
 ]
+
+
+links_with_skip_45 = [
+    'https://i.imgur.com/qLvzkbG.jpeg',
+    '[img]https://i.imgur.com/eTtfUbF.jpeg[/img]',
+    '[img]https://i.imgur.com/9LfKYT4.jpeg[/img]',
+
+]
