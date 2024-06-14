@@ -1,0 +1,324 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.navbar {
+  display: flex;
+  position: sticky;
+  align-items: center;
+  justify-content: space-between;
+  top: 0px;
+  background: #111111;
+  padding: 10px 20px;
+  z-index: 99999999;
+}
+
+.nav-list {
+  display: flex;
+  list-style: none;
+}
+
+.nav-list li {
+  margin-right: 20px;
+}
+
+.nav-list li:last-child {
+  margin-right: 0;
+}
+
+.nav-list li a {
+  font-family: Comfortaa;
+  text-decoration: none;
+  color: #fadcaa;
+  font-size: 18px;
+  transition: color 0.3s ease-in-out;
+  position: relative;
+}
+.nav-list li a:after {
+  display: block;
+  position: absolute;
+  left: 0; /*изменить на right:0;, чтобы изменить направление подчёркивания */
+  width: 0; /*задаём длинну линии до наведения курсора*/
+  height: 2px; /*задаём ширину линии*/
+  background-color: #fadcaa; /*задаём цвет линии*/
+  content: "";
+  transition: width 0.3s ease-out; /*задаём время анимации*/
+}
+
+.nav-list li a:hover:after {
+  width: 100%; /*устанавливаем значение 100% чтобы ссылка подчёркивалась полностью*/
+}
+
+/* .nav-list li a:hover {
+    width: 100%;
+    /* text-decoration: underline; */
+/* transition: 0.3s; */
+/* color: #eb3425; */
+/* Change the color on hover */
+/* } */
+
+.rightNav {
+  text-align: right;
+}
+
+#search {
+  padding: 8px;
+  font-size: 16px;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  font-family: Comfortaa;
+}
+
+.btn {
+  background-color: #111111;
+  color: #fadcaa;
+  /* border: none; */
+  border-color: #fadcaa;
+  padding: 8px 12px;
+  border-width: 1px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  font-family: Comfortaa;
+}
+
+.btn:hover {
+  background-color: #fadcaa;
+  /* Change the background color on hover */
+  color: #111111;
+}
+
+.catalog {
+  display: block;
+  box-sizing: border-box;
+}
+
+.catalog_title {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  justify-content: space-between;
+}
+
+.title {
+  margin-bottom: 0;
+  margin-top: 0;
+  vertical-align: middle;
+}
+
+.products {
+  position: relative;
+  display: flex;
+  /* padding-top: 10px; */
+  min-height: 100%;
+  padding-top: 5px;
+  padding-left: 24px;
+  padding-right: 24px;
+  /* padding: 24px; */
+}
+
+.catalog_left-block {
+  display: block;
+  margin-right: 12px;
+  width: 234px;
+  /* z-index: 10; */
+  height: 100%;
+}
+
+.left-filters {
+  display: block;
+  position: relative;
+  transform: translate3d(0px, 0px, 0px);
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 2px 0 #0000001a;
+  box-sizing: border-box;
+  padding: 10px 15px;
+  border: 1px solid black;
+}
+
+.genres {
+  display: block;
+}
+
+h2 {
+  font-family: Comfortaa;
+  color: #fadcaa;
+  font-size: 18px;
+  line-height: 28px;
+}
+
+.ui-checkbox {
+  font-family: Comfortaa;
+  color: #fadcaa;
+  margin-bottom: 0;
+  cursor: pointer;
+  display: block;
+  font-size: 16px;
+  padding: 8px 0 8px 23px;
+  position: relative;
+}
+
+.ui-checkbox_gr {
+  left: 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+  height: 16px;
+  position: absolute;
+  top: 10px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.23, 1);
+  width: 16px;
+}
+
+/* Стили карточек */
+.catalog_content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px 30px;
+}
+
+.card {
+  padding: 10px;
+  border: 1px solid black;
+}
+
+.catalog_content {
+  margin-left: 60px;
+}
+
+.card_img {
+  max-width: 200px;
+}
+
+.titles {
+  margin-top: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.titles .name {
+  width: 200px;
+  text-align: center;
+}
+
+/* Dropdown */
+.container {
+  margin: 20px 20px 0;
+  position: relative;
+  width: 20em;
+  min-height: 1.5em;
+  border: 0.05em solid #777;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  outline: none;
+  -webkit-text-fill-color: #fff;
+}
+
+.container:focus {
+  border-color: #ff9900;
+}
+
+.value {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.clear_btn {
+  background: none;
+  color: #777;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
+.clear_btn:focus,
+.clear_btn:hover {
+  color: #333;
+}
+
+.divider {
+  background-color: #777;
+  align-self: stretch;
+  width: 0.05rem;
+}
+
+.caret {
+  translate: 0 25%;
+  border: 0.25em solid transparent;
+  border-top-color: #777;
+}
+
+.options {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: none;
+  max-height: 15em;
+  overflow-y: auto;
+  border: 0.05em solid #777;
+  border-radius: 0.25em;
+  width: 100%;
+  left: 0;
+  top: calc(100% + 0.25em);
+  background-color: rgba(0, 0, 0, 0.97);
+  z-index: 100;
+}
+
+.options.show {
+  display: block;
+}
+
+.option {
+  padding: 0.25em 0.5em;
+}
+
+.option.selected {
+  background-color: #f59607;
+}
+
+.option.highlighted {
+  background-color: #d89025;
+  color: white;
+}
+
+.option_badge {
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  border: 0.05em solid #777;
+  border-radius: 0.25em;
+  padding: 0.15em 0.25em;
+  gap: 0.25em;
+  cursor: pointer;
+  background: none;
+  outline: none;
+}
+
+.option_badge:hover {
+  background-color: hsl(36, 100%, 60%);
+  border-color: hsl(36, 100%, 50%);
+}
+
+/* .option_badge:hover > .remove_btn,
+.option_badge:focus > .remove_btn {
+	color: hsl(0, 100%, 50%);
+} */
+
+.option_badge > .remove_btn {
+  font-size: 1.25em;
+  color: #777;
+}

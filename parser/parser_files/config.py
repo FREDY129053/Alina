@@ -1,3 +1,4 @@
+import re
 import time
 
 from imgurpython import ImgurClient
@@ -54,8 +55,10 @@ def get_all_artists_images():
     # client = authenticate()
     collection = get_collection_connection('vinyl_info')
     vinyls = list(collection.find({}))
-    for i in vinyls[:25]:
-        print(i['country'])
+    print(f'Len coll = {len(vinyls)}')
+    for i in vinyls:
+        i['_id'] = str(i['_id'])
+
     # h = httplib2.Http('.cache')
     # response, content = h.request('https://i.discogs.com/gCBbNixRMyZN5bM5Vdr0zL6k0bULgkjASOnERXuV8Do/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwODAw/NDItMTYzMjQyMjE1/Ny02MTY3LmpwZWc.jpeg')
     # out = open('../../web_app/frontend/images/img.jpg', 'wb')
