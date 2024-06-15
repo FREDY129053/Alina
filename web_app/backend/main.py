@@ -5,12 +5,12 @@ from router import router
 
 
 app = FastAPI(
-    title="Database of vinyls",
-    description="Description of my app.",
-    version="1.0",
+    # title="Database of vinyls",
+    # description="Description of my app.",
+    # version="1.0",
     docs_url='/docs',
-    openapi_url='/openapi.json',
-    redoc_url=None
+    # openapi_url='/openapi.json',
+    # redoc_url=None
 )
 
 origins = [

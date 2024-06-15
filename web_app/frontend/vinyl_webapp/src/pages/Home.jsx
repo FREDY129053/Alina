@@ -8,7 +8,8 @@ import { Link } from "react-router-dom";
 export default function Home() {
   const [filters, setFilters] = useState([]);
   const [allVinyls, setAllVinyls] = useState([]);
-  const [countries, setCountries] = useState([]);
+  const [country, setCountry] = useState("");
+  const [sort, setSort] = useState("");
 
   const getDbFilters = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/filters").then((response) => {
@@ -19,7 +20,6 @@ export default function Home() {
   const getVinyls = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/").then((response) => {
       setAllVinyls(response.data);
-      console.log(response.data);
     });
   };
 
@@ -36,13 +36,20 @@ export default function Home() {
             <h1 className="title">Catalog</h1>
             <div className="sort">
               <span>Sort by</span>
-              <select name="sort" id="sort_top">
+              <Dropdown
+                text="Default"
+                filters={[1, 2, 3]}
+                value={sort}
+                onChange={(o) => setSort(o)}
+                multiple={false}
+              />
+              {/* <select name="sort" id="sort_top">
                 <option value=""></option>
                 <option value="">по названию А-Я</option>
                 <option value="">по названию Я-А</option>
                 <option value="">по убыванию рейтнга</option>
                 <option value="">по возрастанию рейтинга</option>
-              </select>
+              </select> */}
             </div>
           </div>
           <div className="products">
@@ -62,8 +69,8 @@ export default function Home() {
                   <Dropdown
                     text="All"
                     filters={filters.countries}
-                    value={countries}
-                    onChange={(o) => setCountries(o)}
+                    value={country}
+                    onChange={(o) => setCountry(o)}
                     multiple={false}
                   />
                 </div>
@@ -136,7 +143,7 @@ export function Dropdown({ multiple, value, onChange, filters, text }) {
     >
       {multiple ? (
         <span className="value">
-          {value.length === 0 ? (
+          {value.length === 0 || value === "" ? (
             <label>{text}</label>
           ) : (
             value.map((v, i) => (
@@ -156,8 +163,7 @@ export function Dropdown({ multiple, value, onChange, filters, text }) {
         </span>
       ) : (
         <span className="value">
-          {console.log(value)}
-          {value === undefined ? <label>{text}</label> : value}
+          {value === undefined || value === "" ? <label>{text}</label> : value}
         </span>
       )}
       <button
