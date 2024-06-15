@@ -10,7 +10,8 @@ export default function Home() {
   const [allVinyls, setAllVinyls] = useState([]);
   const [country, setCountry] = useState("");
   const [sort, setSort] = useState("");
-  
+  const [selectedGenres, setSelectedGenres] = useState([]);
+  const [isSelected, setIsSelected] = useState(false);
 
   const getDbFilters = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/filters").then((response) => {
@@ -28,6 +29,22 @@ export default function Home() {
     getVinyls();
     getDbFilters();
   }, []);
+
+  useEffect(() => {
+    console.log(
+      `Sort by ${sort} | Country ${country} | Genres ${selectedGenres}`
+    );
+  }, [country, sort, selectedGenres]);
+
+  const handleCheckboxChange = (genre) => {
+    setSelectedGenres((prevSelectedGenres) => {
+      const updatedGenres = prevSelectedGenres.includes(genre)
+        ? prevSelectedGenres.filter((g) => g !== genre)
+        : [...prevSelectedGenres, genre];
+      return updatedGenres;
+    });
+    setIsSelected(!isSelected);
+  };
 
   return (
     <>
@@ -54,7 +71,12 @@ export default function Home() {
                   {filters.genres.map((item) => (
                     <label className="ui-checkbox" key={Math.random() * 10}>
                       <span>{item}</span>
-                      <input type="checkbox" className="ui-checkbox_gr" />
+                      <input
+                        type="checkbox"
+                        className="ui-checkbox_gr"
+                        onChange={() => handleCheckboxChange(item)}
+                        checked={selectedGenres.includes(item)}
+                      />
                     </label>
                   ))}
                 </div>
