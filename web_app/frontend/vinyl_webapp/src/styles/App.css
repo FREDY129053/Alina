@@ -93,10 +93,11 @@ a {
   color: #111111;
 }
 
-.sort {
+.sort_elements {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 .catalog {
@@ -237,6 +238,23 @@ h2 {
 .clear_btn:focus,
 .clear_btn:hover {
   color: var(--light-color);
+}
+
+.sort {
+  margin: 10px 0 5px;
+  position: relative;
+  width: 10em;
+  min-height: 0.5em;
+  border: 0.05em solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 0.2em;
+  padding-left: 0.3em;
+  padding-right: 0.1em;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  border-radius: 0.25em;
+  outline: none;
 }
 
 .container {

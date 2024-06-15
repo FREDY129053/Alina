@@ -10,6 +10,7 @@ export default function Home() {
   const [allVinyls, setAllVinyls] = useState([]);
   const [country, setCountry] = useState("");
   const [sort, setSort] = useState("");
+  
 
   const getDbFilters = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/filters").then((response) => {
@@ -34,22 +35,15 @@ export default function Home() {
         <div className="catalog">
           <div className="catalog_title">
             <h1 className="title">Catalog</h1>
-            <div className="sort">
+            <div className="sort_elements">
               <span>Sort by</span>
               <Dropdown
                 text="Default"
-                filters={[1, 2, 3]}
+                filters={["Name A-Z", "Name Z-A", "Rating Up", "Rating Down"]}
                 value={sort}
                 onChange={(o) => setSort(o)}
-                multiple={false}
+                class_type={"sort"}
               />
-              {/* <select name="sort" id="sort_top">
-                <option value=""></option>
-                <option value="">по названию А-Я</option>
-                <option value="">по названию Я-А</option>
-                <option value="">по убыванию рейтнга</option>
-                <option value="">по возрастанию рейтинга</option>
-              </select> */}
             </div>
           </div>
           <div className="products">
@@ -71,7 +65,7 @@ export default function Home() {
                     filters={filters.countries}
                     value={country}
                     onChange={(o) => setCountry(o)}
-                    multiple={false}
+                    class_type={"filter"}
                   />
                 </div>
                 <div className="year"></div>
@@ -106,28 +100,20 @@ export default function Home() {
   );
 }
 
-export function Dropdown({ multiple, value, onChange, filters, text }) {
+export function Dropdown({ class_type, value, onChange, filters, text }) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
 
   function clearOptions() {
-    multiple ? onChange([]) : onChange(undefined);
+    onChange(undefined);
   }
 
   function selectOption(option) {
-    if (multiple) {
-      if (value.includes(option)) {
-        onChange(value.filter((o) => o !== option));
-      } else {
-        onChange([...value, option]);
-      }
-    } else {
-      if (option !== value) onChange(option);
-    }
+    if (option !== value) onChange(option);
   }
 
   function isOptionSelected(option) {
-    return multiple ? value.includes(option) : option === value;
+    return option === value;
   }
 
   useEffect(() => {
@@ -139,33 +125,13 @@ export function Dropdown({ multiple, value, onChange, filters, text }) {
       onBlur={() => setIsOpen(false)}
       onClick={() => setIsOpen(!isOpen)}
       tabIndex={0}
-      className="container"
+      className={`${class_type === "sort" ? "sort" : "container"}`}
     >
-      {multiple ? (
-        <span className="value">
-          {value.length === 0 || value === "" ? (
-            <label>{text}</label>
-          ) : (
-            value.map((v, i) => (
-              <button
-                key={i}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  selectOption(v);
-                }}
-                className="option_badge"
-              >
-                {v}
-                <span className="remove_btn">&times;</span>
-              </button>
-            ))
-          )}
-        </span>
-      ) : (
+      {
         <span className="value">
           {value === undefined || value === "" ? <label>{text}</label> : value}
         </span>
-      )}
+      }
       <button
         onClick={(e) => {
           e.stopPropagation();
