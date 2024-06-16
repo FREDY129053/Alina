@@ -8,25 +8,34 @@ router = APIRouter(prefix='/vinyl_info')
 
 @router.get('/')
 async def get_all_vinyls(genres: List[str] = Query(None),
-                        countries: List[str] = Query(None),
-                        # sort: str = Query(None)
+                         countries: List[str] = Query(None),
+                         page: int = Query(1, qt = 0),
+                         sort: str = Query(None)
                          ):
+    size = 20
+    offset = (page - 1) * size
     query = {}  # Запрос
     sort_by = {}  # Запрос на сортировку
     # Если передаются параметры, то запоминаем
     if genres:
         query['genres'] = {'$all': genres}
+        
     if countries:
         query['country'] = {'$all': countries}
-    # TODO: написать параметры сортировки
-    # if sort:
-    #     if sort.lower() == 'date':
-    #         sort_by['date.year'] = -1
-    #     elif sort.lower() == 'rating':
-    #         sort_by['score'] = -1
+
+    if sort:
+        if sort.lower() == 'name a-z':
+            sort_by['name'] = 1
+        elif sort.lower() == 'name z-a':
+            sort_by['name'] = -1
+        elif sort.lower() == 'rating up':
+            sort_by['rating'] = 1
+        elif sort.lower() == 'rating down':
+            sort_by['name'] = -1
+
     # Формируем запрос
-    vinyls = list(db.vinyl_info.find(query))
-    print(f'DB = {query}')
+    vinyls = list(db.vinyl_info.find(query).skip(offset).limit(size))
+
 
     # if sort_by:
     #     vinyls = vinyls.sort(list(sort_by.items()))

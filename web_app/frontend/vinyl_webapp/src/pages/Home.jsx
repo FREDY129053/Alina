@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
 import TempPhoto from "../styles/images/Gex68Hk.jpg";
@@ -13,6 +14,9 @@ export default function Home() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
 
+  const [currPage, setCurrPage] = useState(1);
+  const [isFetching, setIsFetching] = useState(true);
+
   const getDbFilters = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/filters").then((response) => {
       setFilters(response.data);
@@ -20,21 +24,38 @@ export default function Home() {
   };
 
   const getVinyls = () => {
-    axios.get("http://127.0.0.1:8000/vinyl_info/").then((response) => {
-      setAllVinyls(response.data);
-    });
+    axios
+      .get(`http://127.0.0.1:8000/vinyl_info?page=${currPage}`)
+      .then((response) => {
+        setAllVinyls([...allVinyls, ...response.data.vinyls]);
+        setCurrPage((prevState) => prevState + 1);
+      })
+      .finally(() => setIsFetching(false));
+  };
+
+  const scrollHandler = (e) => {
+    if (
+      e.target.documentElement.scrollHeight -
+        (e.target.documentElement.scrollTop + window.innerHeight) <
+      100
+    ) {
+      setIsFetching(true);
+    }
   };
 
   useEffect(() => {
-    getVinyls();
-    getDbFilters();
-  }, []);
+    if (isFetching) {
+      getVinyls(sort, country, selectedGenres);
+      getDbFilters();
+    }
+  }, [isFetching]);
 
   useEffect(() => {
-    console.log(
-      `Sort by ${sort} | Country ${country} | Genres ${selectedGenres}`
-    );
-  }, [country, sort, selectedGenres]);
+    document.addEventListener("scroll", scrollHandler);
+    return function () {
+      document.removeEventListener("scroll", scrollHandler);
+    };
+  }, []);
 
   const handleCheckboxChange = (genre) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -58,7 +79,9 @@ export default function Home() {
                 text="Default"
                 filters={["Name A-Z", "Name Z-A", "Rating Up", "Rating Down"]}
                 value={sort}
-                onChange={(o) => setSort(o)}
+                onChange={(o) => {
+                  setSort(o);
+                }}
                 class_type={"sort"}
               />
             </div>
@@ -86,7 +109,9 @@ export default function Home() {
                     text="All"
                     filters={filters.countries}
                     value={country}
-                    onChange={(o) => setCountry(o)}
+                    onChange={(o) => {
+                      setCountry(o);
+                    }}
                     class_type={"filter"}
                   />
                 </div>
@@ -94,7 +119,7 @@ export default function Home() {
               </div>
             </div>
             <div className="catalog_content">
-              {allVinyls.vinyls.map((vinyl) => (
+              {allVinyls.map((vinyl) => (
                 <div className="card" key={Math.random()}>
                   <Img src={TempPhoto} className="card_img" />
                   <div className="titles">
