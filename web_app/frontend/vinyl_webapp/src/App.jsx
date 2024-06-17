@@ -4,7 +4,10 @@ import Home from "../src/pages/Home";
 import ArtistInfo from "../src/pages/ArtistInfo";
 import Artists from "../src/pages/Artists";
 import VinylInfo from "../src/pages/VinylInfo";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import axios from "axios";
+import { Img } from "react-image";
+import TempPhoto from "../src/styles/images/image.png";
 
 function App() {
   return (
@@ -22,8 +25,36 @@ function App() {
 
 function Navbar() {
   const [search, setSearch] = useState("");
-  // const [answerItems, setAnswerItems] = useState([]);
+  const [answerItems, setAnswerItems] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
+  const divRef = useRef(null);
+
+  const searchResults = (search_input) => {
+    axios
+      .get(`http://127.0.0.1:8000/vinyl_info/search/${search_input}`)
+      .then((response) => {
+        setAnswerItems(response.data);
+      });
+  };
+
+  const handleClickOutside = (e) => {
+    if (divRef.current && !divRef.current.contains(e.target)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleBodyClick = (e) => {
+      handleClickOutside(e);
+      setSearch("");
+    };
+
+    document.body.addEventListener("click", handleBodyClick);
+
+    return () => {
+      document.body.removeEventListener("click", handleBodyClick);
+    };
+  }, []);
 
   useEffect(() => {
     if (search) {
@@ -32,15 +63,15 @@ function Navbar() {
       setIsOpen(false);
     }
 
-    // const TimeSleep = setTimeout(() => {
-    // 	if (search) {
-    // 		getInfoByName(search)
-    // 	} else {
-    // 		setSearchAnswer([])
-    // 	}
-    // }, 300);
+    const TimeSleep = setTimeout(() => {
+      if (search) {
+        searchResults(search);
+      } else {
+        setAnswerItems([]);
+      }
+    }, 300);
 
-    // return () => clearTimeout(TimeSleep)
+    return () => clearTimeout(TimeSleep);
   }, [search]);
 
   return (
@@ -56,7 +87,7 @@ function Navbar() {
           <Link to={"/artists"}>Artists</Link>
         </li>
       </ul>
-      <div className="rightNav">
+      <div className="rightNav" onBlur={handleClickOutside} ref={divRef}>
         <input
           type="text"
           name="search"
@@ -67,10 +98,23 @@ function Navbar() {
           value={search}
         />
         <ul className={`search_options ${isOpen ? "show" : ""}`}>
-          <li>
-            <img src="Gex68Hk.jpg" alt="" />
-            Guardians Of The Galaxy (Songs From The Motion Picture)
-          </li>
+          {answerItems.map((item, i) => (
+            <Link
+              to={`/vinyl/${item.slug}`}
+              key={Math.random() * i - 1}
+              onClick={() =>
+                setTimeout(() => {
+                  setIsOpen(false);
+                  setSearch("");
+                }, 50)
+              }
+            >
+              <li>
+                <Img src={item.imgur_img ? item.imgur_img : TempPhoto} />
+                {item.name}
+              </li>
+            </Link>
+          ))}
         </ul>
       </div>
     </nav>

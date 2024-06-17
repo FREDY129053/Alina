@@ -20,7 +20,7 @@ export default function Artists() {
 
   return (
     <>
-      {allArtists.length !== 0 ? (
+      {allArtists.length != 0 ? (
         <div className="catalog">
           <div className="catalog_title">
             <h1 className="title">Catalog</h1>

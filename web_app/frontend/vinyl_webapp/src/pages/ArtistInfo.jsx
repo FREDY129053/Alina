@@ -33,7 +33,7 @@ export default function ArtistInfo() {
 
   return (
     <>
-      {artist !== null && vinylsOfArtist.length !== 0 ? (
+      {artist !== null && vinylsOfArtist.length != 0 ? (
         <>
           <div className="main_info">
             <div className="body_main">

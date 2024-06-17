@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import TempPhoto from "../styles/images/image.png";
 import { Img } from "react-image";
 import axios from "axios";
+import { Spin } from "antd";
 import { Link } from "react-router-dom";
 
 export default function Home() {
@@ -63,7 +64,7 @@ export default function Home() {
 
   return (
     <>
-      {allVinyls.length != 0 && filters.length != 0 ? (
+      {filters.length != 0 ? (
         <div className="catalog">
           <div className="catalog_title">
             <h1 className="title">Catalog</h1>
@@ -112,46 +113,52 @@ export default function Home() {
                 <div className="year"></div>
               </div>
             </div>
-            <div className="catalog_content">
-              {allVinyls.map((vinyl) => (
-                <Link to={`/vinyl/${vinyl.slug}`} key={Math.random()}>
-                  <div className="card">
-                    <div className="temp">
-                      <Img
-                        src={
-                          // eslint-disable-next-line no-prototype-builtins
-                          vinyl.hasOwnProperty("imgur_img")
-                            ? vinyl.imgur_img
-                            : TempPhoto
-                        }
-                        className="card_img"
-                      />
+            {allVinyls.length != 0 ? (
+              <div className="catalog_content">
+                {allVinyls.map((vinyl) => (
+                  <Link to={`/vinyl/${vinyl.slug}`} key={Math.random()}>
+                    <div className="card">
+                      <div className="temp">
+                        <Img
+                          src={
+                            // eslint-disable-next-line no-prototype-builtins
+                            vinyl.hasOwnProperty("imgur_img")
+                              ? vinyl.imgur_img
+                              : TempPhoto
+                          }
+                          className="card_img"
+                        />
+                      </div>
+                      <div className="titles">
+                        <p className="name">{vinyl.name}</p>
+                        <p>
+                          {Object.keys(vinyl.artists).map((item, i) => (
+                            <React.Fragment key={i}>
+                              <Link
+                                to={`/artists/${vinyl.artists[item]["slug"]}`}
+                              >
+                                {vinyl.artists[item]["name"]}
+                              </Link>
+                              {i !== vinyl.artists.length - 1 && (
+                                <span className="separator">, </span>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </p>
+                      </div>
                     </div>
-                    <div className="titles">
-                      <p className="name">{vinyl.name}</p>
-                      <p>
-                        {Object.keys(vinyl.artists).map((item, i) => (
-                          <React.Fragment key={i}>
-                            <Link
-                              to={`/artists/${vinyl.artists[item]["slug"]}`}
-                            >
-                              {vinyl.artists[item]["name"]}
-                            </Link>
-                            {i !== vinyl.artists.length - 1 && (
-                              <span className="separator">, </span>
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </p>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p>Nothing...</p>
+            )}
           </div>
         </div>
       ) : (
-        <></>
+        <>
+          <Spin size="large" />
+        </>
       )}
     </>
   );

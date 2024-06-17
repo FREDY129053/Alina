@@ -16,11 +16,11 @@
   padding: 0;
 }
 
-a,
+/* a,
 a:visited {
   text-decoration: none;
   color: var(--link-color);
-}
+} */
 
 .navbar {
   display: flex;

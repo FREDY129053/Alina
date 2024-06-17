@@ -106,6 +106,20 @@ async def get_all_vinyls_of_artist(artist_slug: str):
 
     return all_vinyls
 
+
+@router.get('/search/{name}')
+async def get_info_by_name(name: str):
+    query = {}
+    if name:
+        query['name'] = {'$regex': name, '$options': 'i'}
+
+    all_info = list(db.vinyl_info.find(query).limit(4))
+    for info in all_info:
+        info["_id"] = str(info["_id"])
+
+    return all_info
+
+
 @router.get('/{vinyl_slug}')
 async def get_vinyl_by_slug(vinyl_slug: str):
     vinyl = db.vinyl_info.find_one({"slug": vinyl_slug})
@@ -116,5 +130,3 @@ async def get_vinyl_by_slug(vinyl_slug: str):
     vinyl["_id"] = str(vinyl["_id"])
 
     return vinyl
-
-
