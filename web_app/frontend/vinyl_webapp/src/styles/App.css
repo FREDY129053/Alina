@@ -1,10 +1,25 @@
+:root {
+  /* Для выпадающих списков */
+  --text-color: #faca78;
+  --border-color: black;
+  --divider-and-clear-color: black;
+  --light-color: #777;
+  --options-background: rgba(0, 0, 0, 0.97);
+  --selected-options-background: #f59607;
+  --highlighted-option-background: #d89025;
+  /* Цвет ссылок */
+  --link-color: #0a0a0a;
+}
+
 * {
   margin: 0;
   padding: 0;
 }
 
-a {
+a,
+a:visited {
   text-decoration: none;
+  color: var(--link-color);
 }
 
 .navbar {
@@ -93,12 +108,46 @@ a {
   color: #111111;
 }
 
+/* Список результатов поиска */
+.search_options li {
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+  margin-bottom: 4px;
+}
+
+.search_options {
+  margin-top: 5px;
+  position: absolute;
+  display: none;
+  border: 1px solid rgb(0, 0, 0);
+  list-style: none;
+  width: 27%;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.95);
+  color: #fadcaa;
+  font-family: Comfortaa;
+  border-radius: 5px;
+}
+
+.search_options.show {
+  display: block;
+}
+
+.search_options img {
+  width: 70px;
+  height: 70px;
+  padding-right: 10px;
+}
+
+/* Элементы сортировки */
 .sort_elements {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
 }
+/**/
 
 .catalog {
   display: block;
@@ -185,6 +234,7 @@ h2 {
 /* Стили карточек */
 .catalog_content {
   display: grid;
+  /* flex-wrap: wrap; */
   grid-template-columns: repeat(4, 1fr);
   gap: 20px 30px;
 }
@@ -192,39 +242,38 @@ h2 {
 .card {
   padding: 10px;
   border: 1px solid black;
+  max-height: 330px;
 }
 
 .catalog_content {
   margin-left: 60px;
 }
-
+.temp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .card_img {
   max-width: 200px;
+  max-height: 250px;
 }
 
 .titles {
-  margin-top: 5px;
+  /* margin-top: 2px; */
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  /* margin-bottom: 3px; */
+  /* gap: 5px; */
 }
 
 .titles .name {
   width: 200px;
+}
+.titles p {
   text-align: center;
 }
 
 /* Dropdown */
-:root {
-  --text-color: #faca78;
-  --border-color: black;
-  --divider-and-clear-color: black;
-  --light-color: #777;
-  --options-background: rgba(0, 0, 0, 0.97);
-  --selected-options-background: #f59607;
-  --highlighted-option-background: #d89025;
-}
-
 .clear_btn {
   background: none;
   color: var(--divider-and-clear-color);
@@ -327,4 +376,157 @@ h2 {
 
 .option.highlighted {
   background-color: var(--highlighted-option-background);
+}
+
+/* Стили страницы информации о пластинке */
+.main_info {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 30px 30px;
+}
+
+.body_main {
+  display: grid;
+  margin-bottom: 1em;
+  grid-column-gap: 0;
+  grid-row-gap: 0;
+  grid-template-columns: 320px 1fr;
+  grid-template-rows: auto 1fr;
+}
+
+.side_pic {
+  grid-area: 1 / 1 / 3 / 2;
+  display: block;
+}
+
+.album_cover {
+  display: inline-block;
+  line-height: 0;
+  position: relative;
+}
+
+.album_img {
+  width: 250px;
+  height: 250px;
+}
+
+.title_album {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  grid-area: 1 / 2 / 2 / 3;
+  margin-left: 1rem;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+}
+
+.table_info {
+  grid-area: 2 / 2 / 3 / 3;
+  margin-left: 1rem;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: auto;
+  border-spacing: 0;
+  line-height: 3em;
+  box-sizing: border-box;
+  text-indent: initial;
+}
+
+tbody {
+  display: table-row-group;
+  vertical-align: middle;
+  border-color: inherit;
+  border-collapse: collapse;
+}
+
+tr {
+  vertical-align: top;
+  display: table-row;
+}
+
+th {
+  padding-bottom: 8px;
+  vertical-align: top;
+  width: 0;
+  text-align: left;
+  padding-right: 1.5rem;
+  white-space: nowrap;
+  font-weight: 7 00;
+  display: table-cell;
+}
+
+td {
+  padding-bottom: 8px;
+  vertical-align: top;
+  display: table-cell;
+}
+
+header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.table_tracklist {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: auto;
+  border-spacing: 2px;
+  line-height: 2em;
+  box-sizing: border-box;
+  text-indent: initial;
+  /* display: table-row-group; */
+  vertical-align: middle;
+  border-color: inherit;
+}
+
+.table_tracklist tr:last-of-type {
+  display: table-row;
+  vertical-align: top;
+  border-bottom: 1px solid #e5e5e5;
+  border-collapse: collapse;
+}
+
+.track {
+  width: 100%;
+  word-break: break-word;
+  position: relative;
+}
+
+.carousel {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  width: 90vw;
+}
+
+.carousel img {
+  margin-left: 25vw;
+  max-width: 500px;
+}
+
+/* Страница исполнителя */
+.info {
+  padding-right: 400px;
+}
+
+.other_content {
+  position: relative;
+  display: flex;
+  /* padding-top: 10px; */
+  min-height: 100%;
+  padding-top: 5px;
+  padding-left: 80px;
+  padding-right: 30px;
+  /* padding: 24px; */
+}
+
+.discography {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px 30px;
 }

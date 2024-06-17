@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react";
-import TempPhoto from "../styles/images/Gex68Hk.jpg";
+import TempPhoto from "../styles/images/image.png";
 import { Img } from "react-image";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -14,8 +14,8 @@ export default function Home() {
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [isSelected, setIsSelected] = useState(false);
 
-  const [currPage, setCurrPage] = useState(1);
-  const [isFetching, setIsFetching] = useState(true);
+  // const [currPage, setCurrPage] = useState(1);
+  // const [isFetching, setIsFetching] = useState(true);
 
   const getDbFilters = () => {
     axios.get("http://127.0.0.1:8000/vinyl_info/filters").then((response) => {
@@ -24,38 +24,32 @@ export default function Home() {
   };
 
   const getVinyls = () => {
-    axios
-      .get(`http://127.0.0.1:8000/vinyl_info?page=${currPage}`)
-      .then((response) => {
-        setAllVinyls([...allVinyls, ...response.data.vinyls]);
-        setCurrPage((prevState) => prevState + 1);
-      })
-      .finally(() => setIsFetching(false));
-  };
+    let query = `http://127.0.0.1:8000/vinyl_info?`;
 
-  const scrollHandler = (e) => {
-    if (
-      e.target.documentElement.scrollHeight -
-        (e.target.documentElement.scrollTop + window.innerHeight) <
-      100
-    ) {
-      setIsFetching(true);
+    if (sort !== "" && sort !== undefined) {
+      query += `sort=${sort}&`;
     }
+
+    if (country !== "" && country !== undefined) {
+      query += `countries=${country}&`;
+    }
+
+    if (selectedGenres.length !== 0) {
+      selectedGenres.forEach((genre) => {
+        query += `genres=${genre}&`;
+      });
+    }
+
+    axios.get(query).then((response) => {
+      setAllVinyls(response.data.vinyls);
+    });
+    // .finally(() => setIsFetching(false));
   };
 
   useEffect(() => {
-    if (isFetching) {
-      getVinyls(sort, country, selectedGenres);
-      getDbFilters();
-    }
-  }, [isFetching]);
-
-  useEffect(() => {
-    document.addEventListener("scroll", scrollHandler);
-    return function () {
-      document.removeEventListener("scroll", scrollHandler);
-    };
-  }, []);
+    getVinyls();
+    getDbFilters();
+  }, [country, sort, selectedGenres]);
 
   const handleCheckboxChange = (genre) => {
     setSelectedGenres((prevSelectedGenres) => {
@@ -120,22 +114,38 @@ export default function Home() {
             </div>
             <div className="catalog_content">
               {allVinyls.map((vinyl) => (
-                <div className="card" key={Math.random()}>
-                  <Img src={TempPhoto} className="card_img" />
-                  <div className="titles">
-                    <p className="name">{vinyl.name}</p>
-                    <p>
-                      {Object.keys(vinyl.artists).map((item, i) => (
-                        <React.Fragment key={i}>
-                          <Link to={"/"}>{vinyl.artists[item]["name"]}</Link>
-                          {i !== vinyl.artists.length - 1 && (
-                            <span className="separator">, </span>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </p>
+                <Link to={`/vinyl/${vinyl.slug}`} key={Math.random()}>
+                  <div className="card">
+                    <div className="temp">
+                      <Img
+                        src={
+                          // eslint-disable-next-line no-prototype-builtins
+                          vinyl.hasOwnProperty("imgur_img")
+                            ? vinyl.imgur_img
+                            : TempPhoto
+                        }
+                        className="card_img"
+                      />
+                    </div>
+                    <div className="titles">
+                      <p className="name">{vinyl.name}</p>
+                      <p>
+                        {Object.keys(vinyl.artists).map((item, i) => (
+                          <React.Fragment key={i}>
+                            <Link
+                              to={`/artists/${vinyl.artists[item]["slug"]}`}
+                            >
+                              {vinyl.artists[item]["name"]}
+                            </Link>
+                            {i !== vinyl.artists.length - 1 && (
+                              <span className="separator">, </span>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

@@ -52,35 +52,33 @@ def upload_kitten(client, image_path):
 
 
 def get_all_artists_images():
-    # client = authenticate()
+    client = authenticate()
+    query = {
+        "artists": {
+            "$elemMatch": {
+                "name": {"$regex": ".*", "$options": "i"},
+                "slug": "my-chemical-romance"
+            }
+        }
+    }
     collection = get_collection_connection('vinyl_info')
-    vinyls = list(collection.find({}))
-    print(f'Len coll = {len(vinyls)}')
+    vinyls = list(collection.find(query))
     for i in vinyls:
         i['_id'] = str(i['_id'])
 
-    # h = httplib2.Http('.cache')
-    # response, content = h.request('https://i.discogs.com/gCBbNixRMyZN5bM5Vdr0zL6k0bULgkjASOnERXuV8Do/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTMwODAw/NDItMTYzMjQyMjE1/Ny02MTY3LmpwZWc.jpeg')
-    # out = open('../../web_app/frontend/images/img.jpg', 'wb')
-    # out.write(content)
-    # out.close()
-    # artists_collection = get_collection_connection('vinyl_info')
-    # artists = list(artists_collection.find({}).skip(50))
-    # for i in artists:
-    #     i['_id'] = str(i['_id'])
-
-
-    # for i, artist in enumerate(artists):
-    #     if artist['photo'] is None:
-    #         continue
-    #     else:
-    #         query_filter = {'_id': ObjectId(artist['_id'])}
-    #         print(i + 50)
-    #         print(artist['photo'])
-    #         image = upload_kitten(client, artist['photo'])
-    #         time.sleep(15)
-    #         update_operation = {'$set': {'imgur_img': image['link']}}
-    #         result = artists_collection.update_one(query_filter, update_operation)
+    for i, artist in enumerate(vinyls):
+        if len(artist['all_photos']) == 0:
+            continue
+        else:
+            query_filter = {'_id': ObjectId(artist['_id'])}
+            images = []
+            print(i)
+            for j in artist['all_photos']:
+                image = upload_kitten(client, j)
+                images.append(image)
+                time.sleep(15)
+            update_operation = {'$set': {'imgur_all_photos': images}}
+            result = collection.update_one(query_filter, update_operation)
 
 
 if __name__ == "__main__":
