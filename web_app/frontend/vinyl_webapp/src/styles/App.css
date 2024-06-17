@@ -16,12 +16,6 @@
   padding: 0;
 }
 
-/* a,
-a:visited {
-  text-decoration: none;
-  color: var(--link-color);
-} */
-
 .navbar {
   display: flex;
   position: sticky;
@@ -529,4 +523,21 @@ header {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 20px 30px;
+}
+
+/* Класс текста Nothing... если результатов нет(тег <p></p> */
+.empty_result_p {
+}
+
+/* Класс ссылок результатов поиска */
+.search_link,
+.search_link:visited {
+  color: red !important;
+}
+
+/* Стили вообще для всех ссылок */
+a,
+a:visited {
+  text-decoration: none;
+  color: var(--link-color);
 }

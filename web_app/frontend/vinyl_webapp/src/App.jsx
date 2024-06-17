@@ -100,6 +100,7 @@ function Navbar() {
         <ul className={`search_options ${isOpen ? "show" : ""}`}>
           {answerItems.map((item, i) => (
             <Link
+              className="search_link"
               to={`/vinyl/${item.slug}`}
               key={Math.random() * i - 1}
               onClick={() =>

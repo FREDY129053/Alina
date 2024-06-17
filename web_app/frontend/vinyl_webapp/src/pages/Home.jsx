@@ -151,7 +151,7 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <p>Nothing...</p>
+              <p className="empty_result_p">Nothing...</p>
             )}
           </div>
         </div>
